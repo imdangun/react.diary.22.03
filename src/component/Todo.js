@@ -8,8 +8,8 @@ function Todo({item}) {
            <ListItemText>
                <InputBase
                     type='text'
-                    id={item.todoId}
-                    name={item.todoId}
+                    id={item.todoId+''}
+                    name={item.todoId+''}
                     value={item.title}
                     multiline={true}
                     fullWidth={true}/>
