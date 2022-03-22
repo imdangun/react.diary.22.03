@@ -1,15 +1,16 @@
-import React, {useContext} from 'react'
+import React, {useState, useContext} from 'react'
 import Todo from '../component/Todo'
 import AddTodo from '../component/AddTodo'
 import TodoContext from '../context/TodoContext'
 
-function DiaryScreen() {
-    const {todos} = useContext(TodoContext)
+function DiaryScreen() { 
+    const {todos, addTodo, delTodo, fixTodo} = useContext(TodoContext)
 
     return (
         <>
-            <AddTodo/>
-            {todos.map((todo, i) => <Todo item={todo} key={i}/>)}
+            <AddTodo addTodo={addTodo}/>
+            {todos.map((todo, i) => 
+                <Todo item={todo} key={todo.todoId} delTodo={delTodo} fixTodo={fixTodo}/>)}
         </>
     )
 }

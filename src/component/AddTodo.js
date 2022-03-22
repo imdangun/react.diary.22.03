@@ -1,26 +1,11 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState} from 'react'
 import {TextField, Paper, Button, Grid} from '@material-ui/core'
-import TodoContext from '../context/TodoContext'
 
-function AddTodo() {
+function AddTodo({addTodo}) {
     const [title, setTitle] = useState('')
-    const {todos, setTodos} = useContext(TodoContext)
-
     const onChange = e => setTitle(e.target.value)
-
-    const addTodo = () => {
-        const todo = {
-            todoId: 100,
-            title,
-            done: false
-        }
-
-        setTodos([todo, ...todos])
-    }
-
-    const onKeyPress = e => {
-        if(e.key === 'Enter') addTodo()
-    }
+    const onKeyPress = e => {if(e.key === 'Enter') addTodo(title) }
+    const onClick = () => addTodo(title)
 
     return (
         <Paper style={{margin:16, padding: 16}}>
@@ -38,7 +23,7 @@ function AddTodo() {
                         fullWidth 
                         color='secondary' 
                         variant='outlined'
-                        onClick={addTodo}>
+                        onClick={onClick}>
                     +</Button>
                 </Grid>
             </Grid>

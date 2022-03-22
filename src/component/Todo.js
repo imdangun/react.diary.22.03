@@ -1,10 +1,15 @@
-import React from 'react'
-import {ListItem, ListItemText, InputBase, Checkbox} from '@material-ui/core'
+import React, {useState} from 'react'
+import {ListItem, ListItemText, InputBase, Checkbox,
+        ListItemSecondaryAction, IconButton} from '@material-ui/core'
+import DeleteOutlined from '@material-ui/icons/DeleteOutlined'
 
-function Todo({item}) {
+function Todo({item, delTodo, fixTodo}) {  
+    const onClick = () => delTodo(item.todoId)
+    const onChange = () =>fixTodo(item.todoId) 
+    
     return (
        <ListItem>
-           <Checkbox checked={item.done}/>
+           <Checkbox checked={item.done} onChange={onChange}/>
            <ListItemText>
                <InputBase
                     type='text'
@@ -14,6 +19,11 @@ function Todo({item}) {
                     multiline={true}
                     fullWidth={true}/>
            </ListItemText>
+           <ListItemSecondaryAction>
+               <IconButton onClick={onClick}>
+                   <DeleteOutlined/>
+               </IconButton>
+           </ListItemSecondaryAction>
         </ListItem>
     )
 }
