@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {ListItem, ListItemText, InputBase, Checkbox,
         ListItemSecondaryAction, IconButton} from '@material-ui/core'
 import DeleteOutlined from '@material-ui/icons/DeleteOutlined'

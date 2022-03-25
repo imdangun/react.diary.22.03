@@ -1,5 +1,5 @@
 import React, {createContext, useState, useEffect} from 'react'
-import host from '../config/app-config'
+import host, {toLogin} from '../config/app-config'
 
 const TodoContext = createContext()
 
@@ -8,10 +8,12 @@ export function TodoContextProvider({children}) {
 
     const getTodos = () => {
         fetch(host + 'diary/todos')
-            .then(response => 
-                response.json()
-                    .then(todos => setTodos(todos))
-            )
+            .then(response => {
+                if(response.status !== 403)                
+                    response.json().then(todos => setTodos(todos))
+                else return Promise.reject('hello')
+            })
+            .catch(toLogin)
     }
 
     const addTodo = title => {
