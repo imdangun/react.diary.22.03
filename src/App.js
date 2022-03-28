@@ -1,12 +1,28 @@
 import React from 'react'
-import {TodoContextProvider} from './context/TodoContext'
 import DiaryScreen from './screen/DiaryScreen'
+import LoginScreen from './screen/LoginScreen'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 
-function App() {    
+function App() {
+    return (     
+        <BrowserRouter>          
+            <Routes>
+                <Route path='/' element={<DiaryScreen/>}/>
+                <Route path='login' element={<LoginScreen/>}/>
+            </Routes>          
+            <Box mt={5}><Copyright/></Box>
+        </BrowserRouter>
+    )
+}
+
+function Copyright() {
     return (
-        <TodoContextProvider>
-            <DiaryScreen/>
-        </TodoContextProvider>
+        <Typography variant='body2' color='textSecondary' align='center'>
+            {'Copyright ©'} 
+            my.com, {new Date().getFullYear()}
+        </Typography>
     )
 }
 
