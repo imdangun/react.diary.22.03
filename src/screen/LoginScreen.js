@@ -1,15 +1,76 @@
-import React, {useEffect} from 'react'
-import {signin} from '../config/api-service'
+import React from 'react'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import {Container} from '@material-ui/core'
+import apiCall from '../config/api-service'
 
 function LoginScreen() {
-    useEffect(() => {
-        signin({
-            email: 'john@john.com',
-            password: 'john'
-        }).then(user => console.log('LoginScreen', user))
-    }, [])
+    const onSubmit = e => {
+        e.preventDefault()
+        const data = new FormData(e.target)
+        const email = data.get('email')
+        const password = data.get('password')
+        signin({email: email, password: password})
+    }
 
-    return <p>로그인</p>
+    const signin = user => { 
+        console.log('user', user)  
+        return apiCall('user/signin', 'post', user)
+            .then(user => {                      
+                if(user.token) {
+                    localStorage.setItem('token', user.token)
+                    window.location.href = '/'
+                }
+            })
+    }
+
+    return (
+        <Container component='main' maxWidth='xs' style={{marginTop: '8%'}}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Typography component='h1' variant='h5'>
+                        로그인
+                    </Typography>
+                </Grid>
+            </Grid>
+            <form noValidate onSubmit={onSubmit}>                
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant='outlined'
+                            required
+                            fullWidth
+                            id='email'
+                            label='이메일'
+                            name='email'
+                            autoComplete='email'/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant='outlined'
+                            required
+                            fullWidth
+                            name='password'
+                            label='패스워드'
+                            type='password'
+                            id='password'
+                            autoComplete='current-password'/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            type='submit'
+                            fullWidth
+                            variant='contained'
+                            color='primary'>
+                            로그인
+                        </Button>
+                    </Grid>
+                </Grid>
+            </form>
+        </Container>
+    )
 }
 
 export default LoginScreen

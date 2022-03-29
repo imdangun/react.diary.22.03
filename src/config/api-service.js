@@ -1,29 +1,36 @@
 import host from './api-config'
 
-export default async function apiCall(api, method, data) {
-    let options = {
-        headers: new Headers({
-            'Content-Type': 'application/json'
-        }),        
-        method: method
-    } 
+export default async function apiCall(api, method, data) { 
+    let headers = new Headers({
+        'content-type': 'application/json'
+    })
+    const token = localStorage.getItem('token')
+    if(token && token != null) headers.append('Authorization', 'Bearer ' + token)
 
-    let promise
-    /*
-        [[Prototype]]: Promise
-        [[PromiseState]]: "fulfilled"
-        [[PromiseResult]]: Response
-    */
+    //for(let val of headers.values()) console.log(val)   
+
+    let options = {
+        headers,      
+        method: method
+    }
     
-    if(method === 'get') {
+    /*
+    if(method === 'get') { // method: get 에는 body 를 사용할 수 없다.
         let url = new URL(host + api)
         if(data) for(let k in data) {url.searchParams.append(k, data[k])}
         promise = fetch(url)
     } else {
-        options.body = JSON.stringify(data) // method: get 에는 body 를 사용할 수 없다.
+        options.body = JSON.stringify(data) 
         promise = fetch(host + api, options)
-    }    
-    console.log(host + api, options)    
+    }
+    */  
+   if(data) options.body = JSON.stringify(data)   
+   let promise = fetch(host + api, options)
+       /*
+        [[Prototype]]: Promise
+        [[PromiseState]]: "fulfilled"
+        [[PromiseResult]]: Response
+    */
         
     return promise.then(response => {      
         /*             
@@ -50,7 +57,9 @@ export default async function apiCall(api, method, data) {
             url: "http://localhost/diary/todos"
             [[Prototype]]: Response 
         */             
-        if(response.ok && method === 'get') {                      
+        //if(response.ok && (api.startsWith('user') || api.endsWith('todos'))) {
+        if(response.ok && response.status != 204) {
+            console.log(response.ok, response.status)            
             return response.json()
              /*
                 [[Prototype]]: Promise
@@ -58,14 +67,11 @@ export default async function apiCall(api, method, data) {
                 [[PromiseResult]]: Array(1)
             */ 
         } else {
-            if(response.status === 403) {            
-                //window.location.href='/login'
+            if(response.status === 403) {                        
+                window.location.href='/login'
                 return Promise.reject('ERROR] 403')
             }
         }       
     })
 }
 
-export function signin(user) {    
-    return apiCall('user/signin', 'get', user)
-}
