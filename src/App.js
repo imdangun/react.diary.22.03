@@ -4,6 +4,7 @@ import LoginScreen from './screen/LoginScreen'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import SignupScreen from './screen/SignupScreen'
 
 function App() {
     return (     
@@ -11,6 +12,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<DiaryScreen/>}/>
                 <Route path='login' element={<LoginScreen/>}/>
+                <Route path='signup' element={<SignupScreen/>}/>
             </Routes>          
             <Box mt={5}><Copyright/></Box>
         </BrowserRouter>

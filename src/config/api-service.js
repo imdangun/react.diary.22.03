@@ -57,9 +57,8 @@ export default async function apiCall(api, method, data) {
             url: "http://localhost/diary/todos"
             [[Prototype]]: Response 
         */             
-        //if(response.ok && (api.startsWith('user') || api.endsWith('todos'))) {
-        if(response.ok && response.status != 204) {
-            console.log(response.ok, response.status)            
+        // 200 <= response.status < 300 이면, response.ok = true 이다.
+        if(response.ok && response.status !== 204) {                 
             return response.json()
              /*
                 [[Prototype]]: Promise
@@ -75,3 +74,22 @@ export default async function apiCall(api, method, data) {
     })
 }
 
+export async function signin(user) { 
+    console.log('user', user)  
+    return apiCall('user/signin', 'post', user)
+        .then(user => {                      
+            if(user.token) {
+                localStorage.setItem('token', user.token)
+                window.location.href = '/'
+            }
+        })
+}
+
+export async function signout() {
+    localStorage.setItem('token', null)
+    window.location.href = '/login'
+}
+
+export async function signup(user) {
+    return apiCall('user/signup', 'post', user)
+}

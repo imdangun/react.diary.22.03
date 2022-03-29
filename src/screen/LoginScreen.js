@@ -4,7 +4,8 @@ import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import {Container} from '@material-ui/core'
-import apiCall from '../config/api-service'
+import {signin} from '../config/api-service'
+import {Link} from '@material-ui/core'
 
 function LoginScreen() {
     const onSubmit = e => {
@@ -13,17 +14,6 @@ function LoginScreen() {
         const email = data.get('email')
         const password = data.get('password')
         signin({email: email, password: password})
-    }
-
-    const signin = user => { 
-        console.log('user', user)  
-        return apiCall('user/signin', 'post', user)
-            .then(user => {                      
-                if(user.token) {
-                    localStorage.setItem('token', user.token)
-                    window.location.href = '/'
-                }
-            })
     }
 
     return (
@@ -67,6 +57,9 @@ function LoginScreen() {
                             로그인
                         </Button>
                     </Grid>
+                    <Link href='signup' variant='body2'>
+                        <Grid item>회원가입</Grid>
+                    </Link>
                 </Grid>
             </form>
         </Container>

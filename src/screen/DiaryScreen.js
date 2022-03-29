@@ -2,13 +2,19 @@ import React, {useState, useEffect} from 'react'
 import Todo from '../component/Todo'
 import AddTodo from '../component/AddTodo'
 import apiCall from '../config/api-service'
+import NavBar from '../component/NavBar'
+import {Container} from '@material-ui/core'
 
 function DiaryScreen() { 
+    const [loading, setLoading] = useState(true)
     const [todos, setTodos] = useState([])   
 
     const getTodos = () => {
         apiCall('diary/todos', 'get', null)        
-            .then(arr => setTodos(arr))          
+            .then(arr => {
+                setTodos(arr)
+                setLoading(false)
+            })          
     }
 
     const addTodo = title => {
@@ -33,13 +39,20 @@ function DiaryScreen() {
 
     useEffect(getTodos, [])
 
-    return (
+    let content
+    if(loading) content = <h1>로딩중</h1>
+    else content = (
         <>
-            <AddTodo addTodo={addTodo}/>
-            {todos.map((todo, i) => 
-                <Todo item={todo} key={todo.todoId} delTodo={delTodo} fixTodo={fixTodo}/>)}
+            <NavBar/>
+            <Container maxWidth='md'>
+                <AddTodo addTodo={addTodo}/>
+                {todos.map((todo, i) => 
+                    <Todo item={todo} key={todo.todoId} delTodo={delTodo} fixTodo={fixTodo}/>)}
+            </Container>
         </>
     )
+
+    return content
 }
 
 export default DiaryScreen
