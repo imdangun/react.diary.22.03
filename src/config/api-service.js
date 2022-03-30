@@ -87,7 +87,7 @@ export async function signin(user) {
 
 export async function signout() {
     localStorage.setItem('token', null)
-    window.location.href = '/login'
+    window.location.href = 'login'
 }
 
 export async function signup(user) {
